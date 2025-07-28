@@ -120,14 +120,56 @@
             font-family: 'Playfair Display', serif;
         }
         
-        .share-section {
+        /* Wheel Styles */
+        .wheel-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 2rem;
+            margin: 2rem 0;
         }
         
-        .share-btn {
+        .wheel {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 8px solid #fff;
+            box-shadow: 0 0 0 8px var(--primary-color), 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform: rotate(0deg);
+        }
+        
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid var(--primary-color);
+            z-index: 10;
+        }
+        
+        .spin-btn {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
@@ -135,28 +177,35 @@
             font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
-            display: inline-flex;
-            align-items: center;
             font-weight: 500;
         }
         
-        .share-btn:hover {
+        .spin-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .spin-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
         }
         
-        .share-btn i {
-            margin-right: 8px;
+        .result {
+            margin-top: 1rem;
             font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            height: 1.5rem;
         }
         
         .progress-container {
             width: 100%;
             max-width: 400px;
-            margin: 2rem auto;
+            margin: 0 auto;
             text-align: center;
         }
         
@@ -194,17 +243,10 @@
         }
         
         .celebration {
-            display: none;
             text-align: center;
             margin-top: 1rem;
             color: var(--primary-color);
             font-weight: 500;
-            animation: fadeIn 1s ease forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         footer {
@@ -227,6 +269,11 @@
             .message {
                 padding: 1rem;
                 font-size: 1rem;
+            }
+            
+            .wheel {
+                width: 250px;
+                height: 250px;
             }
         }
     </style>
@@ -252,9 +299,20 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
-            <div class="celebration" id="celebration">
-                <i class="fas fa-sparkles"></i> Amazing! You've shared with 5+ people!
+            <div class="celebration" id="celebration" style="display: none;">
+                <i class="fas fa-sparkles"></i> Amazing! You've unlocked the Rakhi Gift Wheel!
             </div>
+        </div>
+        
+        <div class="wheel-container">
+            <div class="wheel" id="wheel">
+                <!-- Wheel sections will be added by JavaScript -->
+                <div class="wheel-pointer"></div>
+            </div>
+            <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
+                <i class="fas fa-redo"></i> Spin the Wheel
+            </button>
+            <div class="result" id="result"></div>
         </div>
         
         <div class="share-section">
@@ -273,6 +331,49 @@
         let shareCount = localStorage.getItem('rakhiShareCount') || 0;
         updateProgress(shareCount);
         
+        // Wheel configuration
+        const wheelPrizes = [
+            { text: "Rs.100", color: "#FF6384" },
+            { text: "Rs.120", color: "#36A2EB" },
+            { text: "Rs.150", color: "#FFCE56" },
+            { text: "Rs.200", color: "#4BC0C0" },
+            { text: "Rs.250", color: "#9966FF" },
+            { text: "Rs.300", color: "#FF9F40" }
+        ];
+        
+        // Create wheel sections
+        function createWheel() {
+            const wheel = document.getElementById('wheel');
+            wheel.innerHTML = '<div class="wheel-pointer"></div>';
+            
+            const sectionAngle = 360 / wheelPrizes.length;
+            
+            wheelPrizes.forEach((prize, index) => {
+                const section = document.createElement('div');
+                section.className = 'wheel-section';
+                section.textContent = prize.text;
+                section.style.backgroundColor = prize.color;
+                section.style.transform = `rotate(${sectionAngle * index}deg)`;
+                
+                // Adjust text orientation
+                const textAngle = sectionAngle * index + sectionAngle / 2;
+                section.style.transform = `rotate(${sectionAngle * index}deg)`;
+                section.querySelector('span')?.remove();
+                
+                const textSpan = document.createElement('span');
+                textSpan.textContent = prize.text;
+                textSpan.style.transform = `rotate(${textAngle}deg)`;
+                textSpan.style.display = 'inline-block';
+                textSpan.style.transformOrigin = 'center center';
+                
+                section.appendChild(textSpan);
+                wheel.appendChild(section);
+            });
+        }
+        
+        // Initialize wheel
+        createWheel();
+        
         function updateProgress(count) {
             const percentage = Math.min(count, 5) * 20; // Max 100% (5 shares)
             document.getElementById('progress-fill').style.width = `${percentage}%`;
@@ -281,9 +382,11 @@
             if (count >= 5) {
                 document.getElementById('progress-fill').classList.add('bloom');
                 document.getElementById('celebration').style.display = 'block';
+                document.getElementById('spin-btn').disabled = false;
             } else {
                 document.getElementById('progress-fill').classList.remove('bloom');
                 document.getElementById('celebration').style.display = 'none';
+                document.getElementById('spin-btn').disabled = true;
             }
         }
         
@@ -298,10 +401,40 @@
                 shareCount++;
                 localStorage.setItem('rakhiShareCount', shareCount);
                 updateProgress(shareCount);
-                
-                // Show a thank you message
-                alert('Thank you for sharing these Rakhi wishes!');
             }, 500);
+        }
+        
+        // Spin the wheel function
+        function spinWheel() {
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spin-btn');
+            const result = document.getElementById('result');
+            
+            // Disable button during spin
+            spinBtn.disabled = true;
+            result.textContent = '';
+            
+            // Random rotation (5 full rotations + random prize angle)
+            const sectionAngle = 360 / wheelPrizes.length;
+            const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
+            const rotation = 1800 + (360 - (sectionAngle * prizeIndex + sectionAngle/2));
+            
+            wheel.style.transform = `rotate(${rotation}deg)`;
+            
+            // Show result after spin completes
+            setTimeout(() => {
+                result.textContent = `Congratulations! You won ${wheelPrizes[prizeIndex].text}!`;
+                spinBtn.disabled = false;
+                
+                // Confetti effect
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
+            }, 4000);
         }
         
         // Detect when page is loaded after being shared (not perfect but helps)
@@ -311,5 +444,6 @@
             updateProgress(shareCount);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-</html>
+    </html>
