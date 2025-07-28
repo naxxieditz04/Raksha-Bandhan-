@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Rakshabandhan</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #fff0f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #d81b60;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .image-container {
+            margin: 20px auto;
+            max-width: 600px;
+            border: 8px solid #ff69b4;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+        
+        .share-btn {
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .share-btn:hover {
+            background-color: #ad1457;
+            transform: translateY(-2px);
+        }
+        
+        .message {
+            margin: 20px auto;
+            max-width: 600px;
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Happy Rakshabandhan</h1>
+    
+    <div class="image-container">
+        <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Rakshabandhan Celebration">
+    </div>
+    
+    <p class="message">
+        On this auspicious occasion, I wish you a very Happy Rakshabandhan. 
+        May this sacred thread strengthen our bond and bring joy to our lives.
+    </p>
+    
+    <button class="share-btn" onclick="sharePage()">Share This Rakhi Wishes</button>
+    
+    <script>
+        function sharePage() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Happy Rakshabandhan',
+                    text: 'Check out these beautiful Rakhi wishes!',
+                    url: window.location.href
+                })
+                .then(() => console.log('Shared successfully'))
+                .catch((error) => console.log('Error sharing:', error));
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const shareUrl = `https://wa.me/?text=Happy%20Rakshabandhan!%20Check%20out%20these%20beautiful%20Rakhi%20wishes:%20${encodeURIComponent(window.location.href)}`;
+                window.open(shareUrl, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
