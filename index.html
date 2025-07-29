@@ -252,7 +252,8 @@
             color: white;
             font-size: 1.2rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            /* Isosceles triangle shape (wider base) */
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
         }
         
         .wheel-center {
@@ -427,7 +428,7 @@
             { text: "Rs.300", color: "#FF9F40" }
         ];
         
-        // Create wheel sections
+        // Create wheel sections with isosceles triangle shape
         function createWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
@@ -440,11 +441,11 @@
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Create text element positioned like in games
+                // Create text element positioned in the middle of the triangle
                 const text = document.createElement('div');
                 text.textContent = prize.text;
                 text.style.position = 'absolute';
-                text.style.bottom = '30px';
+                text.style.bottom = '20px';
                 text.style.left = '50%';
                 text.style.transform = 'translateX(-50%) rotate(30deg)';
                 text.style.width = '80px';
@@ -510,7 +511,6 @@
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
             
             // Calculate rotation so the selected segment lands at bottom (180 degrees)
-            // We want the center of the segment to be at the bottom (6 o'clock position)
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
             const rotation = 1800 + (180 - segmentCenterAngle);
             
