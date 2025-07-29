@@ -1,1 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Your Rakhi Gift</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e83e8c;
+            --secondary-color: #6f42c1;
+            --accent-color: #ffc107;
+            --text-color: #333;
+            --light-bg: #f9f5ff;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 200, 239, 0.1) 0%, rgba(255, 255, 255, 1) 90%);
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 2.5rem;
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: space-between;
+            margin: 1.5rem 0;
+        }
+        
+        .payment-option {
+            flex: 0 0 30%;
+            text-align: center;
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .payment-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(232, 62, 140, 0.05);
+        }
+        
+        .payment-option img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-option .checkmark {
+            display: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+        
+        .payment-option.selected .checkmark {
+            display: block;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            background: #ddd;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-message i {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .success-message h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .payment-option {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div id="withdrawal-form">
+            <h1>Withdraw Your Gift</h1>
+            <p class="subtitle">Choose your preferred payment method and enter details</p>
+            
+            <div class="form-group">
+                <label for="amount">Amount (₹)</label>
+                <input type="number" id="amount" placeholder="Enter amount" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" placeholder="Enter registered mobile number" maxlength="10">
+            </div>
+            
+            <h3>Select Payment Method</h3>
+            <div class="payment-methods">
+                <div class="payment-option" data-method="phonepe">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/PhonePe_Logo.svg" alt="PhonePe">
+                    <div>PhonePe</div>
+                    <div class="checkmark"><i class="fas fa-check-circle"></i></div>
+                </div>
+                
+                <div class="payment-option" data-method="gpay">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Pay_%28GPay%29_Logo.svg" alt="Google Pay">
+                    <div>Google Pay</div>
+                    <div class="checkmark"><i class="fas fa-check-circle"></i></div>
+                </div>
+                
+                <div class="payment-option" data-method="paytm">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png" alt="PayTm">
+                    <div>PayTm</div>
+                    <div class="checkmark"><i class="fas fa-check-circle"></i></div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submit-btn" disabled>Withdraw Now</button>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i>
+            <h2>Withdrawal Successful!</h2>
+            <p>Your money will be transferred within 24 hours.</p>
+            <p>Transaction ID: <span id="transaction-id"></span></p>
+            <button class="submit-btn" onclick="window.close()">Close</button>
+        </div>
+    </div>
 
+    <script>
+        // Get amount from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount') || '100';
+        document.getElementById('amount').value = amount;
+        
+        // Payment method selection
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const submitBtn = document.getElementById('submit-btn');
+        let selectedMethod = null;
+        
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedMethod = option.dataset.method;
+                validateForm();
+            });
+        });
+        
+        // Mobile number validation
+        const mobileInput = document.getElementById('mobile');
+        mobileInput.addEventListener('input', validateForm);
+        
+        function validateForm() {
+            const mobile = mobileInput.value.trim();
+            const isValidMobile = /^[6-9]\d{9}$/.test(mobile);
+            
+            submitBtn.disabled = !(selectedMethod && isValidMobile);
+        }
+        
+        // Form submission
+        submitBtn.addEventListener('click', () => {
+            if (submitBtn.disabled) return;
+            
+            // Simulate processing
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                document.getElementById('withdrawal-form').style.display = 'none';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('transaction-id').textContent = generateTransactionId();
+            }, 2000);
+        });
+        
+        function generateTransactionId() {
+            return 'TXN' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        }
+        
+        // Close window if opened from main page
+        if (window.opener) {
+            window.addEventListener('beforeunload', () => {
+                window.opener.postMessage('withdrawal_complete', '*');
+            });
+        }
+    </script>
+</body>
+  </html>
