@@ -219,9 +219,16 @@
             font-size: 1.5rem;
         }
         
-        .wheel {
+        .wheel-wrapper {
+            position: relative;
             width: 300px;
             height: 300px;
+            margin: 0 auto 2rem;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
             position: relative;
             border-radius: 50%;
             overflow: hidden;
@@ -229,7 +236,6 @@
             box-shadow: 0 0 0 8px var(--primary-color), 0 10px 30px rgba(0,0,0,0.2);
             transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
             transform: rotate(0deg);
-            margin: 0 auto;
         }
         
         .wheel-section {
@@ -246,11 +252,12 @@
             color: white;
             font-size: 1.2rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
         }
         
         .wheel-pointer {
             position: absolute;
-            top: -20px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
@@ -270,7 +277,7 @@
             font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 2rem;
+            margin-top: 1rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
             font-weight: 500;
@@ -329,7 +336,7 @@
                 font-size: 1rem;
             }
             
-            .wheel {
+            .wheel-wrapper {
                 width: 280px;
                 height: 280px;
             }
@@ -374,8 +381,10 @@
         
         <div class="wheel-container">
             <h3 class="wheel-title">Rakhi Gift Wheel</h3>
-            <div class="wheel" id="wheel">
-                <!-- Wheel sections will be added by JavaScript -->
+            <div class="wheel-wrapper">
+                <div class="wheel" id="wheel">
+                    <!-- Wheel sections will be added by JavaScript -->
+                </div>
                 <div class="wheel-pointer"></div>
             </div>
             <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
@@ -404,10 +413,10 @@
             { text: "Rs.300", color: "#FF9F40" }
         ];
         
-        // Create wheel sections
+        // Create perfectly equal wheel sections
         function createWheel() {
             const wheel = document.getElementById('wheel');
-            wheel.innerHTML = '<div class="wheel-pointer"></div>';
+            wheel.innerHTML = '';
             
             const sectionAngle = 360 / wheelPrizes.length;
             
@@ -417,20 +426,21 @@
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Create text span and rotate it to be readable
-                const textSpan = document.createElement('span');
-                textSpan.textContent = prize.text;
-                textSpan.style.transform = `rotate(${sectionAngle/2}deg)`;
-                textSpan.style.display = 'inline-block';
-                textSpan.style.transformOrigin = 'left center';
-                textSpan.style.position = 'absolute';
-                textSpan.style.left = '60px';
-                textSpan.style.width = '80px';
-                textSpan.style.textAlign = 'center';
-                textSpan.style.fontWeight = 'bold';
-                textSpan.style.fontSize = '14px';
+                // Create text element
+                const text = document.createElement('div');
+                text.textContent = prize.text;
+                text.style.position = 'absolute';
+                text.style.bottom = '30px';
+                text.style.left = '50%';
+                text.style.transform = 'translateX(-50%) rotate(30deg)';
+                text.style.width = '80px';
+                text.style.textAlign = 'center';
+                text.style.fontWeight = 'bold';
+                text.style.fontSize = '14px';
+                text.style.color = 'white';
+                text.style.textShadow = '1px 1px 2px rgba(0,0,0,0.5)';
                 
-                section.appendChild(textSpan);
+                section.appendChild(text);
                 wheel.appendChild(section);
             });
         }
