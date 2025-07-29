@@ -252,7 +252,6 @@
             color: white;
             font-size: 1.2rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            /* Isosceles triangle shape (wider base) */
             clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
         }
         
@@ -314,6 +313,13 @@
         .spin-btn i {
             margin-right: 8px;
             font-size: 1.2rem;
+        }
+        
+        .spin-count {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: bold;
         }
         
         .result {
@@ -379,12 +385,12 @@
         
         <div class="progress-share-section">
             <div class="progress-container">
-                <div class="progress-text">Spread the joy: <span id="share-count">0</span>/5 shares</div>
+                <div class="progress-text">Spread the joy: <span id="share-count">0</span>/25 shares</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
                 <div class="celebration" id="celebration" style="display: none;">
-                    <i class="fas fa-sparkles"></i> Amazing! You've unlocked the Rakhi Gift Wheel!
+                    <i class="fas fa-sparkles"></i> You earned a spin!
                 </div>
             </div>
             
@@ -402,6 +408,7 @@
                 <div class="wheel-center"></div>
                 <div class="wheel-pointer"></div>
             </div>
+            <div class="spin-count" id="spin-count">Spins available: 0</div>
             <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
                 <i class="fas fa-redo"></i> Spin the Wheel
             </button>
@@ -414,8 +421,10 @@
     </footer>
     
     <script>
-        // Initialize share count from local storage
-        let shareCount = localStorage.getItem('rakhiShareCount') || 0;
+        // Initialize from local storage
+        let shareCount = localStorage.getItem('rakhiShareCount') ? parseInt(localStorage.getItem('rakhiShareCount')) : 0;
+        let spinsAvailable = localStorage.getItem('rakhiSpinsAvailable') ? parseInt(localStorage.getItem('rakhiSpinsAvailable')) : 0;
+        
         updateProgress(shareCount);
         
         // Wheel configuration
@@ -464,18 +473,32 @@
         createWheel();
         
         function updateProgress(count) {
-            const percentage = Math.min(count, 5) * 20; // Max 100% (5 shares)
+            const maxShares = 25;
+            const sharesPerSpin = 5;
+            
+            // Calculate percentage (max 100% at 25 shares)
+            const percentage = Math.min(count, maxShares) * (100/maxShares);
             document.getElementById('progress-fill').style.width = `${percentage}%`;
             document.getElementById('share-count').textContent = count;
             
-            if (count >= 5) {
-                document.getElementById('progress-fill').classList.add('bloom');
-                document.getElementById('celebration').style.display = 'block';
-                document.getElementById('spin-btn').disabled = false;
-            } else {
-                document.getElementById('progress-fill').classList.remove('bloom');
-                document.getElementById('celebration').style.display = 'none';
-                document.getElementById('spin-btn').disabled = true;
+            // Calculate spins available (1 spin per 5 shares)
+            const newSpinsAvailable = Math.floor(count / sharesPerSpin);
+            
+            // Only update if spins have changed
+            if (newSpinsAvailable !== spinsAvailable) {
+                spinsAvailable = newSpinsAvailable;
+                localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
+                document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+                
+                if (spinsAvailable > 0) {
+                    document.getElementById('spin-btn').disabled = false;
+                    document.getElementById('celebration').style.display = 'block';
+                    document.getElementById('progress-fill').classList.add('bloom');
+                } else {
+                    document.getElementById('spin-btn').disabled = true;
+                    document.getElementById('celebration').style.display = 'none';
+                    document.getElementById('progress-fill').classList.remove('bloom');
+                }
             }
         }
         
@@ -488,6 +511,7 @@
             // Increment share count (with some delay to account for popup blockers)
             setTimeout(() => {
                 shareCount++;
+                if (shareCount > 25) shareCount = 25; // Cap at 25
                 localStorage.setItem('rakhiShareCount', shareCount);
                 updateProgress(shareCount);
                 
@@ -498,6 +522,8 @@
         
         // Spin the wheel function - the segment that lands at bottom (6 o'clock) wins
         function spinWheel() {
+            if (spinsAvailable <= 0) return;
+            
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
             const result = document.getElementById('result');
@@ -518,8 +544,13 @@
             
             // Show result after spin completes
             setTimeout(() => {
+                // Deduct one spin
+                spinsAvailable--;
+                localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
+                document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+                
                 result.textContent = `Congratulations! You won ${wheelPrizes[prizeIndex].text}!`;
-                spinBtn.disabled = false;
+                spinBtn.disabled = spinsAvailable <= 0;
                 
                 // Confetti effect
                 if (typeof confetti === 'function') {
@@ -536,10 +567,11 @@
         // Detect when page is loaded after being shared (not perfect but helps)
         if (document.referrer.includes('whatsapp')) {
             shareCount++;
+            if (shareCount > 25) shareCount = 25;
             localStorage.setItem('rakhiShareCount', shareCount);
             updateProgress(shareCount);
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-</html>
+    </html>
