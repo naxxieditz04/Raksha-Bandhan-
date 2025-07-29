@@ -504,15 +504,15 @@
         
         // Wheel configuration
         const wheelPrizes = [
-            { text: "Rs.100", color: "#FF6384" },
-            { text: "Rs.120", color: "#36A2EB" },
-            { text: "Rs.150", color: "#FFCE56" },
-            { text: "Rs.200", color: "#4BC0C0" },
-            { text: "Rs.250", color: "#9966FF" },
-            { text: "Rs.300", color: "#FF9F40" }
+            { text: "100", value: "Rs.100", color: "#FF6384" },
+            { text: "120", value: "Rs.120", color: "#36A2EB" },
+            { text: "150", value: "Rs.150", color: "#FFCE56" },
+            { text: "200", value: "Rs.200", color: "#4BC0C0" },
+            { text: "250", value: "Rs.250", color: "#9966FF" },
+            { text: "300", value: "Rs.300", color: "#FF9F40" }
         ];
         
-        // Create wheel sections with isosceles triangle shape
+        // Create wheel sections with centered text
         function createWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
@@ -525,13 +525,13 @@
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Create text element positioned in the middle of the triangle
+                // Create text element positioned in the center of the triangle
                 const text = document.createElement('div');
                 text.textContent = prize.text;
                 text.style.position = 'absolute';
-                text.style.bottom = '20px';
+                text.style.bottom = '50%';
                 text.style.left = '50%';
-                text.style.transform = 'translateX(-50%) rotate(30deg)';
+                text.style.transform = 'translate(-50%, 50%) rotate(30deg)';
                 text.style.width = '80px';
                 text.style.textAlign = 'center';
                 text.style.fontWeight = 'bold';
@@ -578,24 +578,27 @@
         }
         
         function shareOnWhatsApp() {
-            const shareUrl = `https://wa.me/?text=Happy%20Rakshabandhan!%20Send%20beautiful%20Rakhi%20wishes%20${encodeURIComponent(window.location.href)}`;
+            const shareUrl = `https://wa.me/?text=${encodeURIComponent('Happy Rakshabandhan! Send beautiful Rakhi wishes ' + window.location.href)}`;
             
-            // Open in new tab
-            const newWindow = window.open(shareUrl, '_blank');
+            // Try to open in app first, fallback to new tab
+            try {
+                window.location.href = shareUrl;
+            } catch(e) {
+                window.open(shareUrl, '_blank');
+            }
             
-            // Increment share count (with some delay to account for popup blockers)
+            // Always increment (even if popup blocked)
+            shareCount = Math.min(shareCount + 1, 25);
+            localStorage.setItem('rakhiShareCount', shareCount);
+            updateProgress(shareCount);
+            
+            // Show thank you message
             setTimeout(() => {
-                shareCount++;
-                if (shareCount > 25) shareCount = 25; // Cap at 25
-                localStorage.setItem('rakhiShareCount', shareCount);
-                updateProgress(shareCount);
-                
-                // Show a thank you message
                 alert('Thank you for sharing these Rakhi wishes!');
             }, 500);
         }
         
-        // Spin the wheel function - the segment that lands at bottom (6 o'clock) wins
+        // Spin the wheel function
         function spinWheel() {
             if (spinsAvailable <= 0) return;
             
@@ -610,7 +613,7 @@
             // Random rotation (5 full rotations + random prize angle)
             const sectionAngle = 360 / wheelPrizes.length;
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
-            const prizeWon = wheelPrizes[prizeIndex].text;
+            const prizeWon = wheelPrizes[prizeIndex].value;
             
             // Calculate rotation so the selected segment lands at bottom (180 degrees)
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
@@ -652,13 +655,13 @@
             alert.style.display = 'flex';
         }
 
-        // Close alert and handle withdrawal
+        // Close alert and open withdrawal page
         function withdrawAmount() {
             const alert = document.getElementById('custom-alert');
             alert.style.display = 'none';
             
-            // Here you would typically connect to a payment processing API
-            alert('Withdrawal request received! We will process your payment shortly.');
+            // Open withdrawal.html in a new tab
+            window.open('withdrawal.html', '_blank');
         }
         
         // Detect when page is loaded after being shared (not perfect but helps)
