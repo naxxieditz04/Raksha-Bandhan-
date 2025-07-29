@@ -495,7 +495,7 @@
             }, 500);
         }
         
-        // Spin the wheel function - now the segment that lands at bottom wins
+        // Spin the wheel function - the segment that lands at bottom (6 o'clock) wins
         function spinWheel() {
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
@@ -510,6 +510,7 @@
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
             
             // Calculate rotation so the selected segment lands at bottom (180 degrees)
+            // We want the center of the segment to be at the bottom (6 o'clock position)
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
             const rotation = 1800 + (180 - segmentCenterAngle);
             
@@ -541,4 +542,4 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-        </html>
+</html>
