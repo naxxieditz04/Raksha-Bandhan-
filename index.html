@@ -120,12 +120,103 @@
             font-family: 'Playfair Display', serif;
         }
         
+        /* Progress and Share Section */
+        .progress-share-section {
+            margin: 3rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-text {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .bloom {
+            animation: bloom 1s ease forwards;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+        
+        @keyframes bloom {
+            0% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 25px var(--primary-color); }
+            100% { box-shadow: 0 0 15px var(--primary-color); }
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            margin: 0 auto;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
+        }
+        
+        .share-btn i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .celebration {
+            text-align: center;
+            margin: 1rem 0 2rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
         /* Wheel Styles */
         .wheel-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 2rem 0;
+            margin: 3rem auto;
+            padding: 2rem 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 600px;
+        }
+        
+        .wheel-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
         }
         
         .wheel {
@@ -135,9 +226,10 @@
             border-radius: 50%;
             overflow: hidden;
             border: 8px solid #fff;
-            box-shadow: 0 0 0 8px var(--primary-color), 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 0 0 8px var(--primary-color), 0 10px 30px rgba(0,0,0,0.2);
             transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
             transform: rotate(0deg);
+            margin: 0 auto;
         }
         
         .wheel-section {
@@ -167,6 +259,7 @@
             border-right: 20px solid transparent;
             border-top: 40px solid var(--primary-color);
             z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
         }
         
         .spin-btn {
@@ -177,16 +270,19 @@
             font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
             font-weight: 500;
+            display: flex;
+            align-items: center;
         }
         
         .spin-btn:disabled {
-            background: #ccc;
+            background: #ddd;
             cursor: not-allowed;
             box-shadow: none;
+            transform: none !important;
         }
         
         .spin-btn:hover:not(:disabled) {
@@ -194,59 +290,21 @@
             box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
         }
         
-        .result {
-            margin-top: 1rem;
+        .spin-btn i {
+            margin-right: 8px;
             font-size: 1.2rem;
+        }
+        
+        .result {
+            margin-top: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary-color);
-            height: 1.5rem;
-        }
-        
-        .progress-container {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .progress-text {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: #f0f0f0;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 5px;
-            transition: width 0.5s ease, box-shadow 0.5s ease;
-        }
-        
-        .bloom {
-            animation: bloom 1s ease forwards;
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-        
-        @keyframes bloom {
-            0% { box-shadow: 0 0 5px var(--primary-color); }
-            50% { box-shadow: 0 0 25px var(--primary-color); }
-            100% { box-shadow: 0 0 15px var(--primary-color); }
-        }
-        
-        .celebration {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--primary-color);
-            font-weight: 500;
+            min-height: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(232, 62, 140, 0.1);
+            display: inline-block;
         }
         
         footer {
@@ -272,8 +330,12 @@
             }
             
             .wheel {
-                width: 250px;
-                height: 250px;
+                width: 280px;
+                height: 280px;
+            }
+            
+            .wheel-title {
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -294,17 +356,24 @@
             No matter where life takes us, this bond will always remain special.
         </div>
         
-        <div class="progress-container">
-            <div class="progress-text">Spread the joy: <span id="share-count">0</span>/5 shares</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
+        <div class="progress-share-section">
+            <div class="progress-container">
+                <div class="progress-text">Spread the joy: <span id="share-count">0</span>/5 shares</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="celebration" id="celebration" style="display: none;">
+                    <i class="fas fa-sparkles"></i> Amazing! You've unlocked the Rakhi Gift Wheel!
+                </div>
             </div>
-            <div class="celebration" id="celebration" style="display: none;">
-                <i class="fas fa-sparkles"></i> Amazing! You've unlocked the Rakhi Gift Wheel!
-            </div>
+            
+            <button class="share-btn" onclick="shareOnWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Share on WhatsApp
+            </button>
         </div>
         
         <div class="wheel-container">
+            <h3 class="wheel-title">Rakhi Gift Wheel</h3>
             <div class="wheel" id="wheel">
                 <!-- Wheel sections will be added by JavaScript -->
                 <div class="wheel-pointer"></div>
@@ -313,12 +382,6 @@
                 <i class="fas fa-redo"></i> Spin the Wheel
             </button>
             <div class="result" id="result"></div>
-        </div>
-        
-        <div class="share-section">
-            <button class="share-btn" onclick="shareOnWhatsApp()">
-                <i class="fab fa-whatsapp"></i> Share on WhatsApp
-            </button>
         </div>
     </div>
     
@@ -351,20 +414,21 @@
             wheelPrizes.forEach((prize, index) => {
                 const section = document.createElement('div');
                 section.className = 'wheel-section';
-                section.textContent = prize.text;
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Adjust text orientation
-                const textAngle = sectionAngle * index + sectionAngle / 2;
-                section.style.transform = `rotate(${sectionAngle * index}deg)`;
-                section.querySelector('span')?.remove();
-                
+                // Create text span and rotate it to be readable
                 const textSpan = document.createElement('span');
                 textSpan.textContent = prize.text;
-                textSpan.style.transform = `rotate(${textAngle}deg)`;
+                textSpan.style.transform = `rotate(${sectionAngle/2}deg)`;
                 textSpan.style.display = 'inline-block';
-                textSpan.style.transformOrigin = 'center center';
+                textSpan.style.transformOrigin = 'left center';
+                textSpan.style.position = 'absolute';
+                textSpan.style.left = '60px';
+                textSpan.style.width = '80px';
+                textSpan.style.textAlign = 'center';
+                textSpan.style.fontWeight = 'bold';
+                textSpan.style.fontSize = '14px';
                 
                 section.appendChild(textSpan);
                 wheel.appendChild(section);
@@ -401,6 +465,9 @@
                 shareCount++;
                 localStorage.setItem('rakhiShareCount', shareCount);
                 updateProgress(shareCount);
+                
+                // Show a thank you message
+                alert('Thank you for sharing these Rakhi wishes!');
             }, 500);
         }
         
@@ -429,9 +496,10 @@
                 // Confetti effect
                 if (typeof confetti === 'function') {
                     confetti({
-                        particleCount: 100,
+                        particleCount: 150,
                         spread: 70,
-                        origin: { y: 0.6 }
+                        origin: { y: 0.6 },
+                        colors: ['#e83e8c', '#6f42c1', '#ffc107']
                     });
                 }
             }, 4000);
@@ -446,4 +514,4 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-    </html>
+</html>
