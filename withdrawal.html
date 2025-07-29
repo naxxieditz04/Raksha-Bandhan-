@@ -266,20 +266,11 @@
     <script>
         // Get amount from URL parameter
         const urlParams = new URLSearchParams(window.location.search);
-        let amount = '100'; // Default value
-        
-        // Extract the numeric value from "Rs.XXX" format if present
-        const amountParam = urlParams.get('amount');
-        if (amountParam) {
-            // Remove "Rs." or any non-numeric characters
-            const numericValue = amountParam.replace(/\D/g, '');
-            if (numericValue) {
-                amount = numericValue;
-            }
-        }
+        let amount = urlParams.get('amount') || '100'; // Default to 100 if no amount
         
         // Display the amount
         document.getElementById('won-amount').textContent = `₹${amount}`;
+        document.getElementById('success-amount').textContent = `₹${amount}`;
         
         // Payment method selection
         const paymentOptions = document.querySelectorAll('.payment-option');
@@ -314,9 +305,6 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Processing...';
             
-            // Show the amount in success message
-            document.getElementById('success-amount').textContent = `₹${amount}`;
-            
             // Simulate API call delay
             setTimeout(() => {
                 document.getElementById('withdrawal-form').style.display = 'none';
@@ -328,13 +316,6 @@
         function generateTransactionId() {
             return 'TXN' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
         }
-        
-        // Close window if opened from main page
-        if (window.opener) {
-            window.addEventListener('beforeunload', () => {
-                window.opener.postMessage('withdrawal_complete', '*');
-            });
-        }
     </script>
 </body>
-            </html>
+</html>
