@@ -500,6 +500,12 @@
         let shareCount = localStorage.getItem('rakhiShareCount') ? parseInt(localStorage.getItem('rakhiShareCount')) : 0;
         let spinsAvailable = localStorage.getItem('rakhiSpinsAvailable') ? parseInt(localStorage.getItem('rakhiSpinsAvailable')) : 0;
         
+        // Ensure spins don't go negative
+        if (spinsAvailable < 0) {
+            spinsAvailable = 0;
+            localStorage.setItem('rakhiSpinsAvailable', 0);
+        }
+        
         updateProgress(shareCount);
         
         // Wheel configuration
@@ -546,6 +552,10 @@
         
         // Initialize wheel
         createWheel();
+        
+        // Update UI immediately on load
+        document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+        document.getElementById('spin-btn').disabled = spinsAvailable <= 0;
         
         function updateProgress(count) {
             const maxShares = 25;
@@ -602,11 +612,16 @@
         function spinWheel() {
             if (spinsAvailable <= 0) return;
             
+            // Immediately decrement spins and update storage
+            spinsAvailable--;
+            localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
+            
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
             const result = document.getElementById('result');
             
-            // Disable button during spin
+            // Update UI immediately
+            document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
             spinBtn.disabled = true;
             result.textContent = '';
             
@@ -623,11 +638,6 @@
             
             // Show result after spin completes
             setTimeout(() => {
-                // Deduct one spin
-                spinsAvailable--;
-                localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
-                document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
-                
                 result.textContent = `Congratulations! You won ${prizeWon}!`;
                 spinBtn.disabled = spinsAvailable <= 0;
                 
@@ -674,4 +684,4 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-    </html>
+</html>
