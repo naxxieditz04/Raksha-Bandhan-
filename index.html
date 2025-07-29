@@ -255,18 +255,31 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%);
         }
         
+        .wheel-center {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            border: 5px solid var(--primary-color);
+            box-shadow: 0 0 0 5px rgba(255,255,255,0.8);
+        }
+        
         .wheel-pointer {
             position: absolute;
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
             z-index: 10;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
         }
         
         .spin-btn {
@@ -385,6 +398,7 @@
                 <div class="wheel" id="wheel">
                     <!-- Wheel sections will be added by JavaScript -->
                 </div>
+                <div class="wheel-center"></div>
                 <div class="wheel-pointer"></div>
             </div>
             <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
@@ -413,7 +427,7 @@
             { text: "Rs.300", color: "#FF9F40" }
         ];
         
-        // Create perfectly equal wheel sections
+        // Create wheel sections matching the reference image
         function createWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
@@ -426,7 +440,7 @@
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Create text element
+                // Create text element positioned like the reference image
                 const text = document.createElement('div');
                 text.textContent = prize.text;
                 text.style.position = 'absolute';
@@ -481,7 +495,7 @@
             }, 500);
         }
         
-        // Spin the wheel function
+        // Spin the wheel function - now the segment that lands at the pointer wins
         function spinWheel() {
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
@@ -494,7 +508,11 @@
             // Random rotation (5 full rotations + random prize angle)
             const sectionAngle = 360 / wheelPrizes.length;
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
-            const rotation = 1800 + (360 - (sectionAngle * prizeIndex + sectionAngle/2));
+            
+            // Calculate rotation so the selected segment lands at the pointer (top center)
+            // The pointer is at -90deg (top), so we need to rotate the wheel so that the selected segment's center is at -90deg
+            const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
+            const rotation = 1800 + (270 - segmentCenterAngle); // 270 = 360 - 90 (to account for pointer at top)
             
             wheel.style.transform = `rotate(${rotation}deg)`;
             
@@ -524,4 +542,4 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-</html>
+    </html>
