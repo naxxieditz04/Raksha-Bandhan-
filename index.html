@@ -271,9 +271,9 @@
         
         .wheel-pointer {
             position: absolute;
-            top: -10px;
+            bottom: -10px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) rotate(180deg);
             width: 40px;
             height: 40px;
             background: var(--primary-color);
@@ -427,7 +427,7 @@
             { text: "Rs.300", color: "#FF9F40" }
         ];
         
-        // Create wheel sections matching the game style
+        // Create wheel sections
         function createWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
@@ -495,7 +495,7 @@
             }, 500);
         }
         
-        // Spin the wheel function - now the segment that lands at top wins
+        // Spin the wheel function - now the segment that lands at bottom wins
         function spinWheel() {
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
@@ -509,10 +509,9 @@
             const sectionAngle = 360 / wheelPrizes.length;
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
             
-            // Calculate rotation so the selected segment lands at top (0 degrees)
-            // We want the center of the segment to be at the top
+            // Calculate rotation so the selected segment lands at bottom (180 degrees)
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
-            const rotation = 1800 + (360 - segmentCenterAngle);
+            const rotation = 1800 + (180 - segmentCenterAngle);
             
             wheel.style.transform = `rotate(${rotation}deg)`;
             
@@ -542,4 +541,4 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-    </html>
+        </html>
