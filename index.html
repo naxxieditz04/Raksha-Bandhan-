@@ -77,6 +77,263 @@
             font-weight: 300;
         }
         
+        .image-container {
+            margin: 2rem auto;
+            max-width: 600px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .image-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+            height: auto;
+            object-fit: cover;
+        }
+        
+        .message {
+            margin: 2rem auto;
+            max-width: 600px;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .message::before {
+            content: '"';
+            position: absolute;
+            font-size: 5rem;
+            color: rgba(232, 62, 140, 0.1);
+            top: -1.5rem;
+            left: 0;
+            line-height: 1;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Progress and Share Section */
+        .progress-share-section {
+            margin: 3rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-text {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .bloom {
+            animation: bloom 1s ease forwards;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+        
+        @keyframes bloom {
+            0% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 25px var(--primary-color); }
+            100% { box-shadow: 0 0 15px var(--primary-color); }
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            margin: 0 auto;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
+        }
+        
+        .share-btn i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .celebration {
+            text-align: center;
+            margin: 1rem 0 2rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        /* Wheel Styles */
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 3rem auto;
+            padding: 2rem 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 600px;
+        }
+        
+        .wheel-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .wheel-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 2rem;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 8px solid #fff;
+            box-shadow: 0 0 0 8px var(--primary-color), 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform: rotate(0deg);
+        }
+        
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+        }
+        
+        .wheel-center {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            border: 5px solid var(--primary-color);
+            box-shadow: 0 0 0 5px rgba(255,255,255,0.8);
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 10;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+        }
+        
+        .spin-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .spin-btn:disabled {
+            background: #ddd;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none !important;
+        }
+        
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
+        }
+        
+        .spin-btn i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .spin-count {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .result {
+            margin-top: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            min-height: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(232, 62, 140, 0.1);
+            display: inline-block;
+        }
+        
         /* Custom Alert Dialog Styles */
         .custom-alert {
             display: none;
@@ -132,6 +389,8 @@
             box-shadow: 0 4px 10px rgba(232, 62, 140, 0.3);
             font-weight: 500;
             margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
         }
         
         .withdraw-btn:hover {
@@ -139,14 +398,88 @@
             box-shadow: 0 6px 15px rgba(232, 62, 140, 0.4);
         }
         
-        /* (Rest of your existing CSS remains the same) */
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
         
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .message {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+            
+            .wheel-wrapper {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .wheel-title {
+                font-size: 1.3rem;
+            }
+        }
     </style>
-    <!-- (Rest of your head content remains the same) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- (All your existing HTML remains the same until the script section) -->
-
+    <div class="container">
+        <h1>Happy Rakshabandhan</h1>
+        <p class="subtitle">Celebrating the Eternal Bond Between Brothers and Sisters</p>
+        
+        <div class="image-container">
+            <img src="raksha.png" alt="Rakshabandhan Celebration">
+        </div>
+        
+        <div class="message">
+            On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
+            May this sacred thread strengthen our bond and bring blessings to our lives. 
+            No matter where life takes us, this bond will always remain special.
+        </div>
+        
+        <div class="progress-share-section">
+            <div class="progress-container">
+                <div class="progress-text">Spread the joy: <span id="share-count">0</span>/25 shares</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="celebration" id="celebration" style="display: none;">
+                    <i class="fas fa-sparkles"></i> You earned a spin!
+                </div>
+            </div>
+            
+            <button class="share-btn" onclick="shareOnWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Share on WhatsApp
+            </button>
+        </div>
+        
+        <div class="wheel-container">
+            <h3 class="wheel-title">Rakhi Gift Wheel</h3>
+            <div class="wheel-wrapper">
+                <div class="wheel" id="wheel">
+                    <!-- Wheel sections will be added by JavaScript -->
+                </div>
+                <div class="wheel-center"></div>
+                <div class="wheel-pointer"></div>
+            </div>
+            <div class="spin-count" id="spin-count">Spins available: 0</div>
+            <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
+                <i class="fas fa-redo"></i> Spin the Wheel
+            </button>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+    
     <!-- Custom Alert Dialog -->
     <div class="custom-alert" id="custom-alert">
         <div class="alert-content">
@@ -157,10 +490,111 @@
             </button>
         </div>
     </div>
-
+    
+    <footer>
+        <p>© 2023 Rakshabandhan Wishes | Made with <i class="fas fa-heart" style="color: var(--primary-color);"></i></p>
+    </footer>
+    
     <script>
-        // (Your existing JavaScript code remains the same until the spinWheel function)
-
+        // Initialize from local storage
+        let shareCount = localStorage.getItem('rakhiShareCount') ? parseInt(localStorage.getItem('rakhiShareCount')) : 0;
+        let spinsAvailable = localStorage.getItem('rakhiSpinsAvailable') ? parseInt(localStorage.getItem('rakhiSpinsAvailable')) : 0;
+        
+        updateProgress(shareCount);
+        
+        // Wheel configuration
+        const wheelPrizes = [
+            { text: "Rs.100", color: "#FF6384" },
+            { text: "Rs.120", color: "#36A2EB" },
+            { text: "Rs.150", color: "#FFCE56" },
+            { text: "Rs.200", color: "#4BC0C0" },
+            { text: "Rs.250", color: "#9966FF" },
+            { text: "Rs.300", color: "#FF9F40" }
+        ];
+        
+        // Create wheel sections with isosceles triangle shape
+        function createWheel() {
+            const wheel = document.getElementById('wheel');
+            wheel.innerHTML = '';
+            
+            const sectionAngle = 360 / wheelPrizes.length;
+            
+            wheelPrizes.forEach((prize, index) => {
+                const section = document.createElement('div');
+                section.className = 'wheel-section';
+                section.style.backgroundColor = prize.color;
+                section.style.transform = `rotate(${sectionAngle * index}deg)`;
+                
+                // Create text element positioned in the middle of the triangle
+                const text = document.createElement('div');
+                text.textContent = prize.text;
+                text.style.position = 'absolute';
+                text.style.bottom = '20px';
+                text.style.left = '50%';
+                text.style.transform = 'translateX(-50%) rotate(30deg)';
+                text.style.width = '80px';
+                text.style.textAlign = 'center';
+                text.style.fontWeight = 'bold';
+                text.style.fontSize = '14px';
+                text.style.color = 'white';
+                text.style.textShadow = '1px 1px 2px rgba(0,0,0,0.5)';
+                
+                section.appendChild(text);
+                wheel.appendChild(section);
+            });
+        }
+        
+        // Initialize wheel
+        createWheel();
+        
+        function updateProgress(count) {
+            const maxShares = 25;
+            const sharesPerSpin = 5;
+            
+            // Calculate percentage (max 100% at 25 shares)
+            const percentage = Math.min(count, maxShares) * (100/maxShares);
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+            document.getElementById('share-count').textContent = count;
+            
+            // Calculate spins available (1 spin per 5 shares)
+            const newSpinsAvailable = Math.floor(count / sharesPerSpin);
+            
+            // Only update if spins have changed
+            if (newSpinsAvailable !== spinsAvailable) {
+                spinsAvailable = newSpinsAvailable;
+                localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
+                document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+                
+                if (spinsAvailable > 0) {
+                    document.getElementById('spin-btn').disabled = false;
+                    document.getElementById('celebration').style.display = 'block';
+                    document.getElementById('progress-fill').classList.add('bloom');
+                } else {
+                    document.getElementById('spin-btn').disabled = true;
+                    document.getElementById('celebration').style.display = 'none';
+                    document.getElementById('progress-fill').classList.remove('bloom');
+                }
+            }
+        }
+        
+        function shareOnWhatsApp() {
+            const shareUrl = `https://wa.me/?text=Happy%20Rakshabandhan!%20Send%20beautiful%20Rakhi%20wishes%20${encodeURIComponent(window.location.href)}`;
+            
+            // Open in new tab
+            const newWindow = window.open(shareUrl, '_blank');
+            
+            // Increment share count (with some delay to account for popup blockers)
+            setTimeout(() => {
+                shareCount++;
+                if (shareCount > 25) shareCount = 25; // Cap at 25
+                localStorage.setItem('rakhiShareCount', shareCount);
+                updateProgress(shareCount);
+                
+                // Show a thank you message
+                alert('Thank you for sharing these Rakhi wishes!');
+            }, 500);
+        }
+        
         // Spin the wheel function - the segment that lands at bottom (6 o'clock) wins
         function spinWheel() {
             if (spinsAvailable <= 0) return;
@@ -226,9 +660,15 @@
             // Here you would typically connect to a payment processing API
             alert('Withdrawal request received! We will process your payment shortly.');
         }
-
-        // (Rest of your existing JavaScript remains the same)
+        
+        // Detect when page is loaded after being shared (not perfect but helps)
+        if (document.referrer.includes('whatsapp')) {
+            shareCount++;
+            if (shareCount > 25) shareCount = 25;
+            localStorage.setItem('rakhiShareCount', shareCount);
+            updateProgress(shareCount);
+        }
     </script>
-    <!-- (Rest of your body content remains the same) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
     </html>
