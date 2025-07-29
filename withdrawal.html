@@ -68,6 +68,21 @@
             margin-bottom: 2rem;
         }
         
+        .amount-display {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(232, 62, 140, 0.1);
+            border-radius: 12px;
+            border: 2px dashed var(--primary-color);
+        }
+        
+        .amount-display .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -97,6 +112,7 @@
             display: flex;
             justify-content: space-between;
             margin: 1.5rem 0;
+            flex-wrap: wrap;
         }
         
         .payment-option {
@@ -107,6 +123,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             border: 1px solid transparent;
+            margin-bottom: 1rem;
         }
         
         .payment-option:hover {
@@ -201,11 +218,11 @@
     <div class="container">
         <div id="withdrawal-form">
             <h1>Withdraw Your Gift</h1>
-            <p class="subtitle">Choose your preferred payment method and enter details</p>
+            <p class="subtitle">Choose your preferred payment method to receive your prize</p>
             
-            <div class="form-group">
-                <label for="amount">Amount (₹)</label>
-                <input type="number" id="amount" placeholder="Enter amount" readonly>
+            <div class="amount-display">
+                <div>You Won:</div>
+                <div class="value" id="won-amount">₹100</div>
             </div>
             
             <div class="form-group">
@@ -240,7 +257,7 @@
         <div class="success-message" id="success-message">
             <i class="fas fa-check-circle"></i>
             <h2>Withdrawal Successful!</h2>
-            <p>Your money will be transferred within 24 hours.</p>
+            <p>Your <span id="success-amount"></span> will be transferred within 24 hours.</p>
             <p>Transaction ID: <span id="transaction-id"></span></p>
             <button class="submit-btn" onclick="window.close()">Close</button>
         </div>
@@ -249,8 +266,20 @@
     <script>
         // Get amount from URL parameter
         const urlParams = new URLSearchParams(window.location.search);
-        const amount = urlParams.get('amount') || '100';
-        document.getElementById('amount').value = amount;
+        let amount = '100'; // Default value
+        
+        // Extract the numeric value from "Rs.XXX" format if present
+        const amountParam = urlParams.get('amount');
+        if (amountParam) {
+            // Remove "Rs." or any non-numeric characters
+            const numericValue = amountParam.replace(/\D/g, '');
+            if (numericValue) {
+                amount = numericValue;
+            }
+        }
+        
+        // Display the amount
+        document.getElementById('won-amount').textContent = `₹${amount}`;
         
         // Payment method selection
         const paymentOptions = document.querySelectorAll('.payment-option');
@@ -285,6 +314,9 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Processing...';
             
+            // Show the amount in success message
+            document.getElementById('success-amount').textContent = `₹${amount}`;
+            
             // Simulate API call delay
             setTimeout(() => {
                 document.getElementById('withdrawal-form').style.display = 'none';
@@ -305,4 +337,4 @@
         }
     </script>
 </body>
-  </html>
+            </html>
