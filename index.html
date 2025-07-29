@@ -120,7 +120,6 @@
             font-family: 'Playfair Display', serif;
         }
         
-        /* Progress and Share Section */
         .progress-share-section {
             margin: 3rem auto;
             max-width: 600px;
@@ -198,7 +197,6 @@
             font-weight: 500;
         }
         
-        /* Wheel Styles */
         .wheel-container {
             display: flex;
             flex-direction: column;
@@ -334,7 +332,6 @@
             display: inline-block;
         }
         
-        /* Custom Alert Dialog Styles */
         .custom-alert {
             display: none;
             position: fixed;
@@ -458,7 +455,7 @@
                 </div>
             </div>
             
-            <button class="share-btn" onclick="shareOnWhatsApp()">
+            <button class="share-btn" id="share-btn">
                 <i class="fab fa-whatsapp"></i> Share on WhatsApp
             </button>
         </div>
@@ -473,19 +470,18 @@
                 <div class="wheel-pointer"></div>
             </div>
             <div class="spin-count" id="spin-count">Spins available: 0</div>
-            <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
+            <button class="spin-btn" id="spin-btn" disabled>
                 <i class="fas fa-redo"></i> Spin the Wheel
             </button>
             <div class="result" id="result"></div>
         </div>
     </div>
     
-    <!-- Custom Alert Dialog -->
     <div class="custom-alert" id="custom-alert">
         <div class="alert-content">
             <div class="alert-title">Congratulations! 🎉</div>
             <div class="alert-message" id="alert-message">You won Rs.100!</div>
-            <button class="withdraw-btn" onclick="withdrawAmount()">
+            <button class="withdraw-btn" id="withdraw-btn">
                 <i class="fas fa-rupee-sign"></i> Withdraw Now
             </button>
         </div>
@@ -506,8 +502,6 @@
             localStorage.setItem('rakhiSpinsAvailable', 0);
         }
         
-        updateProgress(shareCount);
-        
         // Wheel configuration
         const wheelPrizes = [
             { text: "100", value: "Rs.100", color: "#FF6384" },
@@ -517,6 +511,24 @@
             { text: "250", value: "Rs.250", color: "#9966FF" },
             { text: "300", value: "Rs.300", color: "#FF9F40" }
         ];
+        
+        // DOM elements
+        const shareBtn = document.getElementById('share-btn');
+        const spinBtn = document.getElementById('spin-btn');
+        const withdrawBtn = document.getElementById('withdraw-btn');
+        
+        // Initialize the page
+        function initPage() {
+            updateProgress(shareCount);
+            createWheel();
+            document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+            spinBtn.disabled = spinsAvailable <= 0;
+            
+            // Event listeners
+            shareBtn.addEventListener('click', shareOnWhatsApp);
+            spinBtn.addEventListener('click', spinWheel);
+            withdrawBtn.addEventListener('click', withdrawAmount);
+        }
         
         // Create wheel sections with centered text
         function createWheel() {
@@ -531,7 +543,6 @@
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Create text element positioned in the center of the triangle
                 const text = document.createElement('div');
                 text.textContent = prize.text;
                 text.style.position = 'absolute';
@@ -550,37 +561,27 @@
             });
         }
         
-        // Initialize wheel
-        createWheel();
-        
-        // Update UI immediately on load
-        document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
-        document.getElementById('spin-btn').disabled = spinsAvailable <= 0;
-        
         function updateProgress(count) {
             const maxShares = 25;
             const sharesPerSpin = 5;
             
-            // Calculate percentage (max 100% at 25 shares)
             const percentage = Math.min(count, maxShares) * (100/maxShares);
             document.getElementById('progress-fill').style.width = `${percentage}%`;
             document.getElementById('share-count').textContent = count;
             
-            // Calculate spins available (1 spin per 5 shares)
             const newSpinsAvailable = Math.floor(count / sharesPerSpin);
             
-            // Only update if spins have changed
             if (newSpinsAvailable !== spinsAvailable) {
                 spinsAvailable = newSpinsAvailable;
                 localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
                 document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
                 
                 if (spinsAvailable > 0) {
-                    document.getElementById('spin-btn').disabled = false;
+                    spinBtn.disabled = false;
                     document.getElementById('celebration').style.display = 'block';
                     document.getElementById('progress-fill').classList.add('bloom');
                 } else {
-                    document.getElementById('spin-btn').disabled = true;
+                    spinBtn.disabled = true;
                     document.getElementById('celebration').style.display = 'none';
                     document.getElementById('progress-fill').classList.remove('bloom');
                 }
@@ -590,61 +591,63 @@
         function shareOnWhatsApp() {
             const shareUrl = `https://wa.me/?text=${encodeURIComponent('Happy Rakshabandhan! Send beautiful Rakhi wishes ' + window.location.href)}`;
             
-            // Try to open in app first, fallback to new tab
-            try {
-                window.location.href = shareUrl;
-            } catch(e) {
-                window.open(shareUrl, '_blank');
+            // Open share window
+            const newWindow = window.open(shareUrl, '_blank');
+            
+            // Check if window was opened successfully
+            if (newWindow) {
+                // Only increment share count after successful share
+                setTimeout(() => {
+                    shareCount = Math.min(shareCount + 1, 25);
+                    localStorage.setItem('rakhiShareCount', shareCount);
+                    updateProgress(shareCount);
+                    
+                    // Show thank you message
+                    alert('Thank you for sharing these Rakhi wishes!');
+                }, 1000);
+            } else {
+                alert('Please allow popups to share');
             }
-            
-            // Always increment (even if popup blocked)
-            shareCount = Math.min(shareCount + 1, 25);
-            localStorage.setItem('rakhiShareCount', shareCount);
-            updateProgress(shareCount);
-            
-            // Show thank you message
-            setTimeout(() => {
-                alert('Thank you for sharing these Rakhi wishes!');
-            }, 500);
         }
         
-        // Spin the wheel function
         function spinWheel() {
             if (spinsAvailable <= 0) return;
             
-            // Immediately decrement spins and update storage
+            // Immediately deduct spin and update progress
             spinsAvailable--;
             localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
             
+            // Deduct 5 shares (1 spin worth) from progress
+            shareCount = Math.max(0, shareCount - 5);
+            localStorage.setItem('rakhiShareCount', shareCount);
+            
             const wheel = document.getElementById('wheel');
-            const spinBtn = document.getElementById('spin-btn');
             const result = document.getElementById('result');
             
             // Update UI immediately
+            updateProgress(shareCount);
             document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
             spinBtn.disabled = true;
             result.textContent = '';
             
-            // Random rotation (5 full rotations + random prize angle)
+            // Random prize selection
             const sectionAngle = 360 / wheelPrizes.length;
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
             const prizeWon = wheelPrizes[prizeIndex].value;
             
-            // Calculate rotation so the selected segment lands at bottom (180 degrees)
+            // Calculate rotation
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
             const rotation = 1800 + (180 - segmentCenterAngle);
             
             wheel.style.transform = `rotate(${rotation}deg)`;
             
-            // Show result after spin completes
+            // Show result after animation
             setTimeout(() => {
                 result.textContent = `Congratulations! You won ${prizeWon}!`;
                 spinBtn.disabled = spinsAvailable <= 0;
                 
-                // Show custom alert with prize amount
                 showWinAlert(prizeWon);
                 
-                // Confetti effect
                 if (typeof confetti === 'function') {
                     confetti({
                         particleCount: 150,
@@ -656,7 +659,6 @@
             }, 4000);
         }
 
-        // Show custom alert with prize amount
         function showWinAlert(prize) {
             const alert = document.getElementById('custom-alert');
             const message = document.getElementById('alert-message');
@@ -665,23 +667,14 @@
             alert.style.display = 'flex';
         }
 
-        // Close alert and open withdrawal page
         function withdrawAmount() {
-            const alert = document.getElementById('custom-alert');
-            alert.style.display = 'none';
-            
-            // Open withdrawal.html in a new tab
+            document.getElementById('custom-alert').style.display = 'none';
             window.open('withdrawal.html', '_blank');
         }
         
-        // Detect when page is loaded after being shared (not perfect but helps)
-        if (document.referrer.includes('whatsapp')) {
-            shareCount++;
-            if (shareCount > 25) shareCount = 25;
-            localStorage.setItem('rakhiShareCount', shareCount);
-            updateProgress(shareCount);
-        }
+        // Initialize the page when loaded
+        window.addEventListener('DOMContentLoaded', initPage);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-</html>
+    </html>
