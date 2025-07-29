@@ -427,7 +427,7 @@
             { text: "Rs.300", color: "#FF9F40" }
         ];
         
-        // Create wheel sections matching the reference image
+        // Create wheel sections matching the game style
         function createWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
@@ -440,7 +440,7 @@
                 section.style.backgroundColor = prize.color;
                 section.style.transform = `rotate(${sectionAngle * index}deg)`;
                 
-                // Create text element positioned like the reference image
+                // Create text element positioned like in games
                 const text = document.createElement('div');
                 text.textContent = prize.text;
                 text.style.position = 'absolute';
@@ -495,7 +495,7 @@
             }, 500);
         }
         
-        // Spin the wheel function - now the segment that lands at the pointer wins
+        // Spin the wheel function - now the segment that lands at top wins
         function spinWheel() {
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
@@ -509,10 +509,10 @@
             const sectionAngle = 360 / wheelPrizes.length;
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
             
-            // Calculate rotation so the selected segment lands at the pointer (top center)
-            // The pointer is at -90deg (top), so we need to rotate the wheel so that the selected segment's center is at -90deg
+            // Calculate rotation so the selected segment lands at top (0 degrees)
+            // We want the center of the segment to be at the top
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
-            const rotation = 1800 + (270 - segmentCenterAngle); // 270 = 360 - 90 (to account for pointer at top)
+            const rotation = 1800 + (360 - segmentCenterAngle);
             
             wheel.style.transform = `rotate(${rotation}deg)`;
             
