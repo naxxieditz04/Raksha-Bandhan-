@@ -6,12 +6,12 @@
     <title>Withdraw Your Rakhi Gift</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary-color: #e83e8c;
             --secondary-color: #6f42c1;
-            --accent-color: #ffc107;
             --text-color: #333;
             --light-bg: #f9f5ff;
             --white: #ffffff;
@@ -30,12 +30,14 @@
             background-color: var(--light-bg);
             min-height: 100vh;
             padding: 2rem;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 200, 239, 0.1) 0%, rgba(255, 255, 255, 1) 90%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .container {
             max-width: 500px;
-            margin: 2rem auto;
+            width: 100%;
             background: var(--white);
             border-radius: 16px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -61,26 +63,19 @@
             text-align: center;
         }
         
-        .subtitle {
-            font-size: 1rem;
-            text-align: center;
-            color: #666;
-            margin-bottom: 2rem;
-        }
-        
-        .amount-display {
+        .prize-display {
             text-align: center;
             margin: 2rem 0;
             padding: 1.5rem;
             background: rgba(232, 62, 140, 0.1);
             border-radius: 12px;
-            border: 2px dashed var(--primary-color);
         }
         
-        .amount-display .value {
+        .prize-amount {
             font-size: 2.5rem;
             font-weight: bold;
             color: var(--primary-color);
+            margin: 0.5rem 0;
         }
         
         .form-group {
@@ -93,79 +88,33 @@
             font-weight: 500;
         }
         
-        input {
+        input, select {
             width: 100%;
             padding: 0.8rem 1rem;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
         }
         
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
         }
         
-        .payment-methods {
-            display: flex;
-            justify-content: space-between;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
-        }
-        
-        .payment-option {
-            flex: 0 0 30%;
-            text-align: center;
-            cursor: pointer;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            margin-bottom: 1rem;
-        }
-        
-        .payment-option:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .payment-option.selected {
-            border-color: var(--primary-color);
-            background-color: rgba(232, 62, 140, 0.05);
-        }
-        
-        .payment-option img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            margin-bottom: 0.5rem;
-        }
-        
-        .payment-option .checkmark {
-            display: none;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-top: 0.5rem;
-        }
-        
-        .payment-option.selected .checkmark {
-            display: block;
-        }
-        
         .submit-btn {
-            width: 100%;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
             padding: 1rem;
             font-size: 1.1rem;
-            border-radius: 50px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
             font-weight: 500;
+            width: 100%;
             margin-top: 1rem;
         }
         
@@ -174,148 +123,142 @@
             box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
         }
         
-        .submit-btn:disabled {
-            background: #ddd;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
         
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 2rem;
+        .payment-method {
+            width: 60px;
+            height: 40px;
+            object-fit: contain;
+            filter: grayscale(30%);
+            transition: all 0.3s ease;
         }
         
-        .success-message i {
-            font-size: 4rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+        .payment-method:hover {
+            filter: grayscale(0%);
+            transform: scale(1.1);
         }
         
-        .success-message h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 1.5rem;
             }
             
-            .payment-methods {
-                flex-direction: column;
+            h1 {
+                font-size: 1.8rem;
             }
             
-            .payment-option {
-                margin-bottom: 1rem;
+            .prize-amount {
+                font-size: 2rem;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <div id="withdrawal-form">
-            <h1>Withdraw Your Gift</h1>
-            <p class="subtitle">Choose your preferred payment method to receive your prize</p>
-            
-            <div class="amount-display">
-                <div>You Won:</div>
-                <div class="value" id="won-amount">₹100</div>
+        <h1>Withdraw Your Prize</h1>
+        
+        <div class="prize-display">
+            <div>Your Winning Amount:</div>
+            <div class="prize-amount" id="prize-amount">Rs.100</div>
+            <div>Enter your details to claim</div>
+        </div>
+        
+        <form id="withdrawal-form">
+            <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" required placeholder="Enter your full name">
             </div>
             
             <div class="form-group">
-                <label for="mobile">Mobile Number</label>
-                <input type="tel" id="mobile" placeholder="Enter registered mobile number" maxlength="10">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" required placeholder="Enter your phone number">
             </div>
             
-            <h3>Select Payment Method</h3>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email (optional)">
+            </div>
+            
+            <div class="form-group">
+                <label for="payment-method">Payment Method</label>
+                <select id="payment-method" required>
+                    <option value="">Select payment method</option>
+                    <option value="upi">UPI (Google Pay, PhonePe, etc.)</option>
+                    <option value="bank">Bank Transfer</option>
+                    <option value="paytm">Paytm Wallet</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="upi-details" style="display: none;">
+                <label for="upi-id">UPI ID</label>
+                <input type="text" id="upi-id" placeholder="Enter your UPI ID">
+            </div>
+            
+            <div class="form-group" id="bank-details" style="display: none;">
+                <label for="account-number">Account Number</label>
+                <input type="text" id="account-number" placeholder="Enter account number">
+                
+                <label for="ifsc" style="margin-top: 1rem;">IFSC Code</label>
+                <input type="text" id="ifsc" placeholder="Enter IFSC code">
+            </div>
+            
+            <div class="form-group" id="paytm-details" style="display: none;">
+                <label for="paytm-number">Paytm Number</label>
+                <input type="tel" id="paytm-number" placeholder="Enter your Paytm number">
+            </div>
+            
             <div class="payment-methods">
-                <div class="payment-option" data-method="phonepe">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/PhonePe_Logo.svg" alt="PhonePe">
-                    <div>PhonePe</div>
-                    <div class="checkmark"><i class="fas fa-check-circle"></i></div>
-                </div>
-                
-                <div class="payment-option" data-method="gpay">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Pay_%28GPay%29_Logo.svg" alt="Google Pay">
-                    <div>Google Pay</div>
-                    <div class="checkmark"><i class="fas fa-check-circle"></i></div>
-                </div>
-                
-                <div class="payment-option" data-method="paytm">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png" alt="PayTm">
-                    <div>PayTm</div>
-                    <div class="checkmark"><i class="fas fa-check-circle"></i></div>
-                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/200px-Google_%22G%22_Logo.svg.png" class="payment-method" alt="Google Pay">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/PhonePe_Logo.svg/2560px-PhonePe_Logo.svg.png" class="payment-method" alt="PhonePe">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Paytm_Logo_%28standalone%29.svg/2560px-Paytm_Logo_%28standalone%29.svg.png" class="payment-method" alt="Paytm">
             </div>
             
-            <button class="submit-btn" id="submit-btn" disabled>Withdraw Now</button>
-        </div>
-        
-        <div class="success-message" id="success-message">
-            <i class="fas fa-check-circle"></i>
-            <h2>Withdrawal Successful!</h2>
-            <p>Your <span id="success-amount"></span> will be transferred within 24-72 hours.</p>
-            <p>Transaction ID: <span id="transaction-id"></span></p>
-            <button class="submit-btn" onclick="window.close()">Close</button>
-        </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-rupee-sign"></i> Claim My Prize
+            </button>
+        </form>
     </div>
-
+    
     <script>
-        // Get amount from URL parameter
+        // Get prize amount from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        let amount = urlParams.get('amount') || '100'; // Default to 100 if no amount
+        const prize = urlParams.get('prize') || 'Rs.100';
+        document.getElementById('prize-amount').textContent = prize;
         
-        // Display the amount
-        document.getElementById('won-amount').textContent = `₹${amount}`;
-        document.getElementById('success-amount').textContent = `₹${amount}`;
-        
-        // Payment method selection
-        const paymentOptions = document.querySelectorAll('.payment-option');
-        const submitBtn = document.getElementById('submit-btn');
-        let selectedMethod = null;
-        
-        paymentOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                paymentOptions.forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
-                selectedMethod = option.dataset.method;
-                validateForm();
-            });
-        });
-        
-        // Mobile number validation
-        const mobileInput = document.getElementById('mobile');
-        mobileInput.addEventListener('input', validateForm);
-        
-        function validateForm() {
-            const mobile = mobileInput.value.trim();
-            const isValidMobile = /^[6-9]\d{9}$/.test(mobile);
+        // Show/hide payment method details based on selection
+        const paymentMethod = document.getElementById('payment-method');
+        paymentMethod.addEventListener('change', function() {
+            document.getElementById('upi-details').style.display = 'none';
+            document.getElementById('bank-details').style.display = 'none';
+            document.getElementById('paytm-details').style.display = 'none';
             
-            submitBtn.disabled = !(selectedMethod && isValidMobile);
-        }
+            if (this.value === 'upi') {
+                document.getElementById('upi-details').style.display = 'block';
+            } else if (this.value === 'bank') {
+                document.getElementById('bank-details').style.display = 'block';
+            } else if (this.value === 'paytm') {
+                document.getElementById('paytm-details').style.display = 'block';
+            }
+        });
         
         // Form submission
-        submitBtn.addEventListener('click', () => {
-            if (submitBtn.disabled) return;
+        document.getElementById('withdrawal-form').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Simulate processing
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Processing...';
+            // Here you would normally send the data to your server
+            alert(`Withdrawal request for ${prize} submitted successfully!\nWe will process your payment within 24 hours.`);
             
-            // Simulate API call delay
-            setTimeout(() => {
-                document.getElementById('withdrawal-form').style.display = 'none';
-                document.getElementById('success-message').style.display = 'block';
-                document.getElementById('transaction-id').textContent = generateTransactionId();
-            }, 2000);
+            // Reset form
+            this.reset();
+            document.getElementById('upi-details').style.display = 'none';
+            document.getElementById('bank-details').style.display = 'none';
+            document.getElementById('paytm-details').style.display = 'none';
         });
-        
-        function generateTransactionId() {
-            return 'TXN' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-        }
     </script>
 </body>
 </html>
