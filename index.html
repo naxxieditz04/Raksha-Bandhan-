@@ -73,18 +73,24 @@
             font-size: 1.1rem;
             text-align: center;
             color: #666;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1rem;
             font-weight: 300;
         }
         
+        .progress-share-section {
+            margin: 2rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        
         .name-input {
-            margin: 1rem auto 2rem;
-            max-width: 400px;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
         
         .name-input input {
             width: 100%;
+            max-width: 400px;
             padding: 0.8rem 1rem;
             border: 2px solid #ddd;
             border-radius: 50px;
@@ -97,63 +103,6 @@
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
-        }
-        
-        .name-input label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-        
-        .image-container {
-            margin: 2rem auto;
-            max-width: 600px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .image-container:hover {
-            transform: translateY(-5px);
-        }
-        
-        .image-container img {
-            width: 100%;
-            display: block;
-            height: auto;
-            object-fit: cover;
-        }
-        
-        .message {
-            margin: 2rem auto;
-            max-width: 600px;
-            font-size: 1.1rem;
-            text-align: center;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            position: relative;
-        }
-        
-        .message::before {
-            content: '"';
-            position: absolute;
-            font-size: 5rem;
-            color: rgba(232, 62, 140, 0.1);
-            top: -1.5rem;
-            left: 0;
-            line-height: 1;
-            font-family: 'Playfair Display', serif;
-        }
-        
-        /* Progress and Share Section */
-        .progress-share-section {
-            margin: 3rem auto;
-            max-width: 600px;
-            text-align: center;
         }
         
         .progress-container {
@@ -222,9 +171,52 @@
         
         .celebration {
             text-align: center;
-            margin: 1rem 0 2rem;
+            margin: 1rem 0;
             color: var(--primary-color);
             font-weight: 500;
+        }
+        
+        .image-container {
+            margin: 2rem auto;
+            max-width: 600px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .image-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+            height: auto;
+            object-fit: cover;
+        }
+        
+        .message {
+            margin: 2rem auto;
+            max-width: 600px;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .message::before {
+            content: '"';
+            position: absolute;
+            font-size: 5rem;
+            color: rgba(232, 62, 140, 0.1);
+            top: -1.5rem;
+            left: 0;
+            line-height: 1;
+            font-family: 'Playfair Display', serif;
         }
         
         /* Wheel Styles */
@@ -466,22 +458,11 @@
         <h1>Happy Rakshabandhan</h1>
         <p class="subtitle">Celebrating the Eternal Bond Between Brothers and Sisters</p>
         
-        <div class="name-input">
-            <label for="sender-name">Your Name:</label>
-            <input type="text" id="sender-name" placeholder="Enter your name" maxlength="30">
-        </div>
-        
-        <div class="image-container">
-            <img src="raksha.png" alt="Rakshabandhan Celebration">
-        </div>
-        
-        <div class="message" id="message">
-            On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
-            May this sacred thread strengthen our bond and bring blessings to our lives. 
-            No matter where life takes us, this bond will always remain special.
-        </div>
-        
         <div class="progress-share-section">
+            <div class="name-input">
+                <input type="text" id="sender-name" placeholder="Enter your name" maxlength="30">
+            </div>
+            
             <div class="progress-container">
                 <div class="progress-text">Shares completed: <span id="share-count">0</span>/25</div>
                 <div class="progress-bar">
@@ -495,6 +476,16 @@
             <button class="share-btn" id="share-btn">
                 <i class="fab fa-whatsapp"></i> Share on WhatsApp
             </button>
+        </div>
+        
+        <div class="image-container">
+            <img src="raksha.png" alt="Rakshabandhan Celebration">
+        </div>
+        
+        <div class="message" id="message">
+            On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
+            May this sacred thread strengthen our bond and bring blessings to our lives. 
+            No matter where life takes us, this bond will always remain special.
         </div>
         
         <div class="wheel-container">
@@ -655,13 +646,8 @@
                 return;
             }
             
-            if (hasShared) {
-                alert('You have already shared this link. Share the existing link instead.');
-                return;
-            }
-            
             // Create unique share URL with sender name
-            const shareUrl = new URL(window.location.href);
+            const shareUrl = new URL(window.location.href.split('?')[0]);
             shareUrl.searchParams.set('from', senderName);
             
             const shareText = `Happy Rakshabandhan from ${senderName}! ${shareUrl}`;
@@ -674,15 +660,17 @@
                 window.open(whatsappUrl, '_blank');
             }
             
-            // Mark as shared and update count
-            hasShared = true;
-            shareCount++;
-            localStorage.setItem('rakhiShareCount', shareCount);
-            updateProgress(shareCount);
-            
-            // Store this shared link to prevent duplicate counting
-            sharedLinks[shareUrl.toString()] = true;
-            localStorage.setItem('rakhiSharedLinks', JSON.stringify(sharedLinks));
+            // Increment share count (only once per session)
+            if (!hasShared) {
+                shareCount++;
+                localStorage.setItem('rakhiShareCount', shareCount);
+                updateProgress(shareCount);
+                hasShared = true;
+                
+                // Track this share URL
+                sharedLinks[shareUrl.toString()] = true;
+                localStorage.setItem('rakhiSharedLinks', JSON.stringify(sharedLinks));
+            }
         });
         
         // Spin the wheel function
