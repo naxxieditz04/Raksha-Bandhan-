@@ -517,9 +517,17 @@
         
         // Initialize from local storage
         let shareCount = localStorage.getItem('rakhiShareCount') ? parseInt(localStorage.getItem('rakhiShareCount')) : 0;
-        let spinsAvailable = localStorage.getItem('rakhiSpinsAvailable') ? parseInt(localStorage.getItem('rakhiSpinsAvailable')) : 0;
+        let spinsUsed = localStorage.getItem('rakhiSpinsUsed') ? parseInt(localStorage.getItem('rakhiSpinsUsed')) : 0;
         let sharedLinks = JSON.parse(localStorage.getItem('rakhiSharedLinks') || '{}');
         let visitedShares = JSON.parse(localStorage.getItem('rakhiVisitedShares') || '{}');
+        
+        // Constants for spin calculation
+        const maxShares = 25;
+        const sharesPerSpin = 5;
+        
+        // Calculate spins available
+        let spinsAvailable = Math.floor(shareCount / sharesPerSpin) - spinsUsed;
+        if (spinsAvailable < 0) spinsAvailable = 0;
         
         // Check URL parameters for sender name and shareId
         const urlParams = new URLSearchParams(window.location.search);
@@ -543,16 +551,11 @@
             
             shareCount++;
             localStorage.setItem('rakhiShareCount', shareCount);
-            updateProgress(shareCount);
+            updateProgress();
         }
         
-        // Ensure spins don't go negative
-        if (spinsAvailable < 0) {
-            spinsAvailable = 0;
-            localStorage.setItem('rakhiSpinsAvailable', 0);
-        }
-        
-        updateProgress(shareCount);
+        // Initialize UI
+        updateProgress();
         
         // Wheel configuration
         const wheelPrizes = [
@@ -599,37 +602,27 @@
         // Initialize wheel
         createWheel();
         
-        // Update UI immediately on load
-        document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
-        document.getElementById('spin-btn').disabled = spinsAvailable <= 0;
-        
-        function updateProgress(count) {
-            const maxShares = 25;
-            const sharesPerSpin = 5;
-            
+        function updateProgress() {
             // Calculate percentage (max 100% at 25 shares)
-            const percentage = Math.min(count, maxShares) * (100/maxShares);
+            const percentage = Math.min(shareCount, maxShares) * (100/maxShares);
             document.getElementById('progress-fill').style.width = `${percentage}%`;
-            document.getElementById('share-count').textContent = count;
+            document.getElementById('share-count').textContent = shareCount;
             
-            // Calculate spins available (1 spin per 5 shares)
-            const newSpinsAvailable = Math.floor(count / sharesPerSpin);
+            // Recalculate spins available
+            spinsAvailable = Math.floor(shareCount / sharesPerSpin) - spinsUsed;
+            if (spinsAvailable < 0) spinsAvailable = 0;
             
-            // Only update if spins have changed
-            if (newSpinsAvailable !== spinsAvailable) {
-                spinsAvailable = newSpinsAvailable;
-                localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
-                document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
-                
-                if (spinsAvailable > 0) {
-                    document.getElementById('spin-btn').disabled = false;
-                    document.getElementById('celebration').style.display = 'block';
-                    document.getElementById('progress-fill').classList.add('bloom');
-                } else {
-                    document.getElementById('spin-btn').disabled = true;
-                    document.getElementById('celebration').style.display = 'none';
-                    document.getElementById('progress-fill').classList.remove('bloom');
-                }
+            // Update UI
+            document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+            
+            if (spinsAvailable > 0) {
+                document.getElementById('spin-btn').disabled = false;
+                document.getElementById('celebration').style.display = 'block';
+                document.getElementById('progress-fill').classList.add('bloom');
+            } else {
+                document.getElementById('spin-btn').disabled = true;
+                document.getElementById('celebration').style.display = 'none';
+                document.getElementById('progress-fill').classList.remove('bloom');
             }
         }
         
@@ -666,7 +659,7 @@
                 
                 shareCount++;
                 localStorage.setItem('rakhiShareCount', shareCount);
-                updateProgress(shareCount);
+                updateProgress();
             }
         });
         
@@ -674,9 +667,10 @@
         document.getElementById('spin-btn').addEventListener('click', function() {
             if (spinsAvailable <= 0) return;
             
-            // Immediately decrement spins and update storage
+            // Decrement spins and update storage
             spinsAvailable--;
-            localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
+            spinsUsed++;
+            localStorage.setItem('rakhiSpinsUsed', spinsUsed);
             
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
@@ -740,4 +734,4 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-</html>
+    </html>
