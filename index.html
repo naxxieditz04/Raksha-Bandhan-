@@ -77,6 +77,35 @@
             font-weight: 300;
         }
         
+        .name-input {
+            margin: 1rem auto 2rem;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .name-input input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .name-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
+        }
+        
+        .name-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
         .image-container {
             margin: 2rem auto;
             max-width: 600px;
@@ -120,6 +149,7 @@
             font-family: 'Playfair Display', serif;
         }
         
+        /* Progress and Share Section */
         .progress-share-section {
             margin: 3rem auto;
             max-width: 600px;
@@ -197,6 +227,7 @@
             font-weight: 500;
         }
         
+        /* Wheel Styles */
         .wheel-container {
             display: flex;
             flex-direction: column;
@@ -332,6 +363,7 @@
             display: inline-block;
         }
         
+        /* Custom Alert Dialog Styles */
         .custom-alert {
             display: none;
             position: fixed;
@@ -434,11 +466,16 @@
         <h1>Happy Rakshabandhan</h1>
         <p class="subtitle">Celebrating the Eternal Bond Between Brothers and Sisters</p>
         
+        <div class="name-input">
+            <label for="sender-name">Your Name:</label>
+            <input type="text" id="sender-name" placeholder="Enter your name" maxlength="30">
+        </div>
+        
         <div class="image-container">
             <img src="raksha.png" alt="Rakshabandhan Celebration">
         </div>
         
-        <div class="message">
+        <div class="message" id="message">
             On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
             May this sacred thread strengthen our bond and bring blessings to our lives. 
             No matter where life takes us, this bond will always remain special.
@@ -446,7 +483,7 @@
         
         <div class="progress-share-section">
             <div class="progress-container">
-                <div class="progress-text">Spread the joy: <span id="share-count">0</span>/25 shares</div>
+                <div class="progress-text">Shares completed: <span id="share-count">0</span>/25</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
@@ -455,7 +492,7 @@
                 </div>
             </div>
             
-            <button class="share-btn" onclick="shareOnWhatsApp()">
+            <button class="share-btn" id="share-btn">
                 <i class="fab fa-whatsapp"></i> Share on WhatsApp
             </button>
         </div>
@@ -470,7 +507,7 @@
                 <div class="wheel-pointer"></div>
             </div>
             <div class="spin-count" id="spin-count">Spins available: 0</div>
-            <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
+            <button class="spin-btn" id="spin-btn" disabled>
                 <i class="fas fa-redo"></i> Spin the Wheel
             </button>
             <div class="result" id="result"></div>
@@ -482,32 +519,62 @@
         <div class="alert-content">
             <div class="alert-title">Congratulations! 🎉</div>
             <div class="alert-message" id="alert-message">You won Rs.100!</div>
-            <button class="withdraw-btn" id="withdraw-btn" onclick="withdrawAmount()">
-                <i class=""></i> Withdraw Now
+            <button class="withdraw-btn" id="withdraw-btn">
+                <i class="fas fa-rupee-sign"></i> Withdraw Now
             </button>
         </div>
     </div>
     
     <footer>
-        <p>© 2025 Rakshabandhan Wishes | Made with <i class="fas fa-heart" style="color: var(--primary-color);"></i></p>
+        <p>© 2023 Rakshabandhan Wishes | Made with <i class="fas fa-heart" style="color: var(--primary-color);"></i></p>
     </footer>
     
     <script>
         // Initialize from local storage
         let shareCount = localStorage.getItem('rakhiShareCount') ? parseInt(localStorage.getItem('rakhiShareCount')) : 0;
         let spinsAvailable = localStorage.getItem('rakhiSpinsAvailable') ? parseInt(localStorage.getItem('rakhiSpinsAvailable')) : 0;
+        let sharedLinks = localStorage.getItem('rakhiSharedLinks') ? JSON.parse(localStorage.getItem('rakhiSharedLinks')) : {};
+        let hasShared = false;
         
-        // Always show share button regardless of how page was opened
+        // Check URL parameters for sender name
+        const urlParams = new URLSearchParams(window.location.search);
+        const senderName = urlParams.get('from');
+        
+        // Update message if sender name exists
+        if (senderName) {
+            document.getElementById('message').innerHTML = `
+                <strong>From ${senderName}:</strong><br><br>
+                On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
+                May this sacred thread strengthen our bond and bring blessings to our lives. 
+                No matter where life takes us, this bond will always remain special.
+            `;
+            
+            // Track this share if it's a new link
+            if (!sharedLinks[window.location.href]) {
+                shareCount++;
+                sharedLinks[window.location.href] = true;
+                localStorage.setItem('rakhiShareCount', shareCount);
+                localStorage.setItem('rakhiSharedLinks', JSON.stringify(sharedLinks));
+                updateProgress(shareCount);
+            }
+        }
+        
+        // Ensure spins don't go negative
+        if (spinsAvailable < 0) {
+            spinsAvailable = 0;
+            localStorage.setItem('rakhiSpinsAvailable', 0);
+        }
+        
         updateProgress(shareCount);
         
         // Wheel configuration
         const wheelPrizes = [
-            { text: "Rs.100", value: "Rs.100", color: "#FF6384" },
-            { text: "Rs.120", value: "Rs.120", color: "#36A2EB" },
-            { text: "Rs.150", value: "Rs.150", color: "#FFCE56" },
-            { text: "Rs.200", value: "Rs.200", color: "#4BC0C0" },
-            { text: "Rs.250", value: "Rs.250", color: "#9966FF" },
-            { text: "Rs.300", value: "Rs.300", color: "#FF9F40" }
+            { text: "100", value: "Rs.100", color: "#FF6384" },
+            { text: "120", value: "Rs.120", color: "#36A2EB" },
+            { text: "150", value: "Rs.150", color: "#FFCE56" },
+            { text: "200", value: "Rs.200", color: "#4BC0C0" },
+            { text: "250", value: "Rs.250", color: "#9966FF" },
+            { text: "300", value: "Rs.300", color: "#FF9F40" }
         ];
         
         // Create wheel sections with centered text
@@ -545,6 +612,10 @@
         // Initialize wheel
         createWheel();
         
+        // Update UI immediately on load
+        document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
+        document.getElementById('spin-btn').disabled = spinsAvailable <= 0;
+        
         function updateProgress(count) {
             const maxShares = 25;
             const sharesPerSpin = 5;
@@ -575,45 +646,58 @@
             }
         }
         
-        function shareOnWhatsApp() {
-            const shareUrl = `https://wa.me/?text=${encodeURIComponent('Happy Rakshabandhan! Send beautiful Rakhi wishes ' + window.location.href)}`;
+        // Share on WhatsApp function
+        document.getElementById('share-btn').addEventListener('click', function() {
+            const senderName = document.getElementById('sender-name').value.trim();
+            
+            if (!senderName) {
+                alert('Please enter your name before sharing');
+                return;
+            }
+            
+            if (hasShared) {
+                alert('You have already shared this link. Share the existing link instead.');
+                return;
+            }
+            
+            // Create unique share URL with sender name
+            const shareUrl = new URL(window.location.href);
+            shareUrl.searchParams.set('from', senderName);
+            
+            const shareText = `Happy Rakshabandhan from ${senderName}! ${shareUrl}`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
             
             // Try to open in app first, fallback to new tab
             try {
-                window.location.href = shareUrl;
+                window.location.href = whatsappUrl;
             } catch(e) {
-                window.open(shareUrl, '_blank');
+                window.open(whatsappUrl, '_blank');
             }
             
-            // Always increment (even if popup blocked)
-            shareCount = Math.min(shareCount + 1, 25);
+            // Mark as shared and update count
+            hasShared = true;
+            shareCount++;
             localStorage.setItem('rakhiShareCount', shareCount);
             updateProgress(shareCount);
             
-            // Show thank you message
-            setTimeout(() => {
-                alert('Thank you for sharing these Rakhi wishes!');
-            }, 500);
-        }
+            // Store this shared link to prevent duplicate counting
+            sharedLinks[shareUrl.toString()] = true;
+            localStorage.setItem('rakhiSharedLinks', JSON.stringify(sharedLinks));
+        });
         
         // Spin the wheel function
-        function spinWheel() {
+        document.getElementById('spin-btn').addEventListener('click', function() {
             if (spinsAvailable <= 0) return;
             
             // Immediately decrement spins and update storage
             spinsAvailable--;
             localStorage.setItem('rakhiSpinsAvailable', spinsAvailable);
             
-            // Also decrease the progress bar by 5 shares (1 spin = 5 shares)
-            shareCount = Math.max(0, shareCount - 5);
-            localStorage.setItem('rakhiShareCount', shareCount);
-            
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spin-btn');
             const result = document.getElementById('result');
             
             // Update UI immediately
-            updateProgress(shareCount);
             document.getElementById('spin-count').textContent = `Spins available: ${spinsAvailable}`;
             spinBtn.disabled = true;
             result.textContent = '';
@@ -647,34 +731,25 @@
                     });
                 }
             }, 4000);
-        }
+        });
 
         // Show custom alert with prize amount
         function showWinAlert(prize) {
             const alert = document.getElementById('custom-alert');
             const message = document.getElementById('alert-message');
-            const withdrawBtn = document.getElementById('withdraw-btn');
-            
-            // Store the numeric value in the withdraw button's data attribute
-            const numericValue = prize.replace("Rs.", "");
-            withdrawBtn.dataset.amount = numericValue;
             
             message.textContent = `You won ${prize}!`;
             alert.style.display = 'flex';
         }
 
-        // Close alert and open withdrawal page with correct amount
-        function withdrawAmount() {
+        // Close alert and open withdrawal page
+        document.getElementById('withdraw-btn').addEventListener('click', function() {
             const alert = document.getElementById('custom-alert');
-            const withdrawBtn = document.getElementById('withdraw-btn');
             alert.style.display = 'none';
             
-            // Get the amount from the button's data attribute
-            const amount = withdrawBtn.dataset.amount || '100';
-            
-            // Open withdrawal.html with the exact amount
-            window.open(`withdrawal.html?amount=${amount}`, '_blank');
-        }
+            // Open withdrawal.html in a new tab
+            window.open('withdrawal.html', '_blank');
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
