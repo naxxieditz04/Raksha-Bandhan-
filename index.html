@@ -73,8 +73,98 @@
             font-size: 1.1rem;
             text-align: center;
             color: #666;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1rem;
             font-weight: 300;
+        }
+        
+        .name-input {
+            margin: 1rem auto;
+            text-align: center;
+        }
+        
+        .name-input input {
+            width: 80%;
+            max-width: 400px;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .name-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
+        }
+        
+        .progress-share-section {
+            margin: 2rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            margin: 0.5rem auto;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
+        }
+        
+        .share-btn i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-text {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto 1.5rem;
+            width: 80%;
+            max-width: 400px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .celebration {
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--primary-color);
+            font-weight: 500;
         }
         
         .image-container {
@@ -118,84 +208,6 @@
             left: 0;
             line-height: 1;
             font-family: 'Playfair Display', serif;
-        }
-        
-        /* Progress and Share Section */
-        .progress-share-section {
-            margin: 3rem auto;
-            max-width: 600px;
-            text-align: center;
-        }
-        
-        .progress-container {
-            margin-bottom: 2rem;
-        }
-        
-        .progress-text {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: #f0f0f0;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 5px;
-            transition: width 0.5s ease, box-shadow 0.5s ease;
-        }
-        
-        .bloom {
-            animation: bloom 1s ease forwards;
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-        
-        @keyframes bloom {
-            0% { box-shadow: 0 0 5px var(--primary-color); }
-            50% { box-shadow: 0 0 25px var(--primary-color); }
-            100% { box-shadow: 0 0 15px var(--primary-color); }
-        }
-        
-        .share-btn {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(232, 62, 140, 0.3);
-            display: inline-flex;
-            align-items: center;
-            font-weight: 500;
-            margin: 0 auto;
-        }
-        
-        .share-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
-        }
-        
-        .share-btn i {
-            margin-right: 8px;
-            font-size: 1.2rem;
-        }
-        
-        .celebration {
-            text-align: center;
-            margin: 1rem 0 2rem;
-            color: var(--primary-color);
-            font-weight: 500;
         }
         
         /* Wheel Styles */
@@ -437,19 +449,17 @@
         <h1>Happy Rakshabandhan</h1>
         <p class="subtitle">Celebrating the Eternal Bond Between Brothers and Sisters</p>
         
-        <div class="image-container">
-            <img src="raksha.png" alt="Rakshabandhan Celebration">
-        </div>
-        
-        <div class="message">
-            On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
-            May this sacred thread strengthen our bond and bring blessings to our lives. 
-            No matter where life takes us, this bond will always remain special.
+        <div class="name-input">
+            <input type="text" id="sender-name" placeholder="Enter your name" maxlength="30">
         </div>
         
         <div class="progress-share-section">
+            <button class="share-btn" id="share-btn">
+                <i class="fab fa-whatsapp"></i> Share on WhatsApp
+            </button>
+            
             <div class="progress-container">
-                <div class="progress-text">Spread the joy: <span id="share-count">0</span>/25 shares</div>
+                <div class="progress-text">Shares completed: <span id="share-count">0</span>/25</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
@@ -457,10 +467,16 @@
                     <i class="fas fa-sparkles"></i> You earned a spin!
                 </div>
             </div>
-            
-            <button class="share-btn" onclick="shareOnWhatsApp()">
-                <i class="fab fa-whatsapp"></i> Share on WhatsApp
-            </button>
+        </div>
+        
+        <div class="image-container">
+            <img src="raksha.png" alt="Rakshabandhan Celebration">
+        </div>
+        
+        <div class="message" id="message">
+            On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
+            May this sacred thread strengthen our bond and bring blessings to our lives. 
+            No matter where life takes us, this bond will always remain special.
         </div>
         
         <div class="wheel-container">
@@ -473,7 +489,7 @@
                 <div class="wheel-pointer"></div>
             </div>
             <div class="spin-count" id="spin-count">Spins available: 0</div>
-            <button class="spin-btn" id="spin-btn" disabled onclick="spinWheel()">
+            <button class="spin-btn" id="spin-btn" disabled>
                 <i class="fas fa-redo"></i> Spin the Wheel
             </button>
             <div class="result" id="result"></div>
@@ -485,7 +501,7 @@
         <div class="alert-content">
             <div class="alert-title">Congratulations! 🎉</div>
             <div class="alert-message" id="alert-message">You won Rs.100!</div>
-            <button class="withdraw-btn" onclick="withdrawAmount()">
+            <button class="withdraw-btn" id="withdraw-btn">
                 <i class="fas fa-rupee-sign"></i> Withdraw Now
             </button>
         </div>
@@ -496,9 +512,39 @@
     </footer>
     
     <script>
+        // Global variable to store the current prize
+        let currentPrize = "";
+        
         // Initialize from local storage
         let shareCount = localStorage.getItem('rakhiShareCount') ? parseInt(localStorage.getItem('rakhiShareCount')) : 0;
         let spinsAvailable = localStorage.getItem('rakhiSpinsAvailable') ? parseInt(localStorage.getItem('rakhiSpinsAvailable')) : 0;
+        let sharedLinks = JSON.parse(localStorage.getItem('rakhiSharedLinks') || '{}');
+        let visitedShares = JSON.parse(localStorage.getItem('rakhiVisitedShares') || '{}');
+        
+        // Check URL parameters for sender name and shareId
+        const urlParams = new URLSearchParams(window.location.search);
+        const senderName = urlParams.get('from');
+        const shareId = urlParams.get('shareId');
+        
+        // Update message if sender name exists
+        if (senderName) {
+            document.getElementById('message').innerHTML = `
+                <strong>From ${senderName}:</strong><br><br>
+                On this auspicious occasion of Rakshabandhan, I wish you happiness, prosperity, and endless joy. 
+                May this sacred thread strengthen our bond and bring blessings to our lives. 
+                No matter where life takes us, this bond will always remain special.
+            `;
+        }
+        
+        // Count unique shares when link is opened
+        if (shareId && !visitedShares[shareId]) {
+            visitedShares[shareId] = true;
+            localStorage.setItem('rakhiVisitedShares', JSON.stringify(visitedShares));
+            
+            shareCount++;
+            localStorage.setItem('rakhiShareCount', shareCount);
+            updateProgress(shareCount);
+        }
         
         // Ensure spins don't go negative
         if (spinsAvailable < 0) {
@@ -587,29 +633,45 @@
             }
         }
         
-        function shareOnWhatsApp() {
-            const shareUrl = `https://wa.me/?text=${encodeURIComponent('Happy Rakshabandhan! Send beautiful Rakhi wishes ' + window.location.href)}`;
+        // Share on WhatsApp function
+        document.getElementById('share-btn').addEventListener('click', function() {
+            const senderName = document.getElementById('sender-name').value.trim();
+            
+            if (!senderName) {
+                alert('Please enter your name before sharing');
+                return;
+            }
+            
+            // Generate unique shareId
+            const shareId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+            const baseUrl = window.location.href.split('?')[0];
+            const shareUrl = new URL(baseUrl);
+            shareUrl.searchParams.set('from', senderName);
+            shareUrl.searchParams.set('shareId', shareId);
+            
+            const message = `🌸 Happy Rakshabandhan from ${senderName}! 🌼\n\nClick here: ${shareUrl.toString()}`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
             
             // Try to open in app first, fallback to new tab
             try {
-                window.location.href = shareUrl;
+                window.location.href = whatsappUrl;
             } catch(e) {
-                window.open(shareUrl, '_blank');
+                window.open(whatsappUrl, '_blank');
             }
             
-            // Always increment (even if popup blocked)
-            shareCount = Math.min(shareCount + 1, 25);
-            localStorage.setItem('rakhiShareCount', shareCount);
-            updateProgress(shareCount);
-            
-            // Show thank you message
-            setTimeout(() => {
-                alert('Thank you for sharing these Rakhi wishes!');
-            }, 500);
-        }
+            // Track this share if it's new
+            if (!sharedLinks[shareId]) {
+                sharedLinks[shareId] = true;
+                localStorage.setItem('rakhiSharedLinks', JSON.stringify(sharedLinks));
+                
+                shareCount++;
+                localStorage.setItem('rakhiShareCount', shareCount);
+                updateProgress(shareCount);
+            }
+        });
         
         // Spin the wheel function
-        function spinWheel() {
+        document.getElementById('spin-btn').addEventListener('click', function() {
             if (spinsAvailable <= 0) return;
             
             // Immediately decrement spins and update storage
@@ -628,7 +690,7 @@
             // Random rotation (5 full rotations + random prize angle)
             const sectionAngle = 360 / wheelPrizes.length;
             const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
-            const prizeWon = wheelPrizes[prizeIndex].value;
+            currentPrize = wheelPrizes[prizeIndex].value;
             
             // Calculate rotation so the selected segment lands at bottom (180 degrees)
             const segmentCenterAngle = sectionAngle * prizeIndex + sectionAngle/2;
@@ -638,11 +700,11 @@
             
             // Show result after spin completes
             setTimeout(() => {
-                result.textContent = `Congratulations! You won ${prizeWon}!`;
+                result.textContent = `Congratulations! You won ${currentPrize}!`;
                 spinBtn.disabled = spinsAvailable <= 0;
                 
                 // Show custom alert with prize amount
-                showWinAlert(prizeWon);
+                showWinAlert(currentPrize);
                 
                 // Confetti effect
                 if (typeof confetti === 'function') {
@@ -654,7 +716,7 @@
                     });
                 }
             }, 4000);
-        }
+        });
 
         // Show custom alert with prize amount
         function showWinAlert(prize) {
@@ -665,22 +727,16 @@
             alert.style.display = 'flex';
         }
 
-        // Close alert and open withdrawal page
-        function withdrawAmount() {
+        // Close alert and open withdrawal page with prize amount
+        document.getElementById('withdraw-btn').addEventListener('click', function() {
             const alert = document.getElementById('custom-alert');
             alert.style.display = 'none';
             
-            // Open withdrawal.html in a new tab
-            window.open('withdrawal.html', '_blank');
-        }
-        
-        // Detect when page is loaded after being shared (not perfect but helps)
-        if (document.referrer.includes('whatsapp')) {
-            shareCount++;
-            if (shareCount > 25) shareCount = 25;
-            localStorage.setItem('rakhiShareCount', shareCount);
-            updateProgress(shareCount);
-        }
+            // Open withdrawal.html with prize amount as URL parameter
+            const withdrawUrl = new URL('withdrawal.html', window.location.href);
+            withdrawUrl.searchParams.set('prize', currentPrize);
+            window.open(withdrawUrl.toString(), '_blank');
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
